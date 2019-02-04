@@ -4,6 +4,8 @@ from django.urls import reverse
 
 from .models import Flight, Passenger
 
+import stripe
+
 # Create your views here.
 def index(request):
     context = {
@@ -42,3 +44,28 @@ def book(request, flight_id):
 
     passenger.flights.add(flight)
     return HttpResponseRedirect(reverse("flight", args=(flight_id,)))
+
+
+def checkout(request):
+    stripe.api_key = "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+
+    # Token is created using Checkout or Elements!
+    # Get the payment token ID submitted by the form
+    token = request.POST.get('stripeToken')
+
+    # charge using the token
+    charge = stripe.Charge.create(
+        amount=2999,
+        currency='usd',
+        description='Example charge',
+        source=token,
+    )
+    print(charge)
+
+    # retrieve single charge
+    retrieved = stripe.Charge.retrieve(
+        charge["id"],
+        api_key="sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+    )
+    print(retrieved)
+    return HttpResponseRedirect(reverse("index"))

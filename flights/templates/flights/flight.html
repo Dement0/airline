@@ -34,5 +34,19 @@
   {% else %}
     <div>No passengers to add.</div>
   {% endif %}
+  <hr>
+  <form action="{% url 'checkout' %}" method="post">
+    {% csrf_token %}
+    <script
+      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+      data-key="pk_test_TYooMQauvdEDq54NiTphI7jx"
+      data-amount="2999"
+      data-name="Stripe.com"
+      data-description="Example charge"
+      data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+      data-locale="auto"
+      data-zip-code="true">
+    </script>
+  </form>
   <a href="{% url 'index' %}">Back to the full listing</a>
 {% endblock %}
