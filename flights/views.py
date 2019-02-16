@@ -47,27 +47,36 @@ def book(request, flight_id):
 
 
 def checkout(request):
-    stripe.api_key = "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+    if request.method == 'POST':
 
-    # Token is created using Checkout or Elements!
-    # Get the payment token ID submitted by the form
-    token = request.POST.get('stripeToken')
+        # Only for testing
+        stripe.api_key = "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
 
-    # charge using the token
-    charge = stripe.Charge.create(
-        amount=2999,
-        currency='eur',
-        description='Example charge',
-        source=token,
-    )
-    print("Charge info")
-    print(charge)
+        # Token is created using Checkout or Elements!
+        # Get the payment token ID submitted by the form
+        token = request.POST.get('stripeToken')
 
-    # retrieve single charge
-    retrieved = stripe.Charge.retrieve(
-        charge["id"],
-        api_key=stripe.api_key
-    )
-    print("Retrieve info")
-    print(retrieved)
-    return HttpResponseRedirect(reverse("index"))
+        # Charge using the token
+        charge = stripe.Charge.create(
+            amount=2999,
+            currency='eur',
+            description='Example charge',
+            source=token,
+        )
+
+        # Retrieve single charge
+        retrieved = stripe.Charge.retrieve(
+            charge["id"],
+            api_key=stripe.api_key
+        )
+
+        # Build a context dict in order to pass it to render
+        context = {
+            "retrieved": retrieved
+        }
+
+        return render(request, "flights/checkout.html", context)
+
+    # If user has reached without POST request, redirect to index
+    else:
+        return HttpResponseRedirect(reverse(index))

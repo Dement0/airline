@@ -1,0 +1,23 @@
+{% extends "flights/base.html" %}
+
+{% block title %}
+  Checkout
+{% endblock %}
+
+{% block body %}
+  <h1>Checkout Info</h1>
+  {% if retrieved.paid %}
+  <p>Successfully paid.</p>
+  {% else %}
+  <p>Error with the payment.</p>
+  {% endif %}
+  <ul>
+    {% for key, value in retrieved.items %}
+      <li>{{ key }}: {{ value }}</li>
+    {% empty %}
+      <li>No info.</li>
+    {% endfor %}
+  </ul>
+  <hr>
+  <a href="{% url 'index' %}">Search another flight</a>
+{% endblock %}
