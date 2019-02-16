@@ -26,6 +26,7 @@
 *.log
 *.sql
 *.sqlite
+*.sqlite3
 /flask_session
 /__pycache__
 /requests
