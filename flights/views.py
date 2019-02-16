@@ -56,16 +56,18 @@ def checkout(request):
     # charge using the token
     charge = stripe.Charge.create(
         amount=2999,
-        currency='usd',
+        currency='eur',
         description='Example charge',
         source=token,
     )
+    print("Charge info")
     print(charge)
 
     # retrieve single charge
     retrieved = stripe.Charge.retrieve(
         charge["id"],
-        api_key="sk_test_4eC39HqLyjWDarjtT1zdp7dc"
+        api_key=stripe.api_key
     )
+    print("Retrieve info")
     print(retrieved)
     return HttpResponseRedirect(reverse("index"))
