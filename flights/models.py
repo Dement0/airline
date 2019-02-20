@@ -11,7 +11,7 @@ class Airport(models.Model):
 
 class Flight(models.Model):
     # Inherting models.Model just establishes this class as a Django model.
-    # origin and destinations should be Airport
+    # Origin and destinations should be Airport
     origin = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name="departures")
     destination = models.ForeignKey(Airport, on_delete=models.CASCADE, related_name="arrivals")
     duration = models.IntegerField()
